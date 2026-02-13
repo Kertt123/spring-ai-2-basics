@@ -1,14 +1,14 @@
 package com.serkowski.controller;
 
+import com.serkowski.model.image.GenerateImageRequest;
 import com.serkowski.model.image.TextWithImgPathRequest;
 import com.serkowski.model.image.TextWithImgUrlRequest;
 import com.serkowski.model.text.TextRequest;
-import com.serkowski.services.ChatService;
-import com.serkowski.services.OpenAIChatService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.serkowski.services.ImageService;
 import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.http.MediaType;
 import org.springframework.http.MediaTypeFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,11 +22,11 @@ import tools.jackson.databind.ObjectMapper;
 @RequestMapping("/image")
 public class ImageController {
 
-    @Autowired
-    private ChatService chatService;
+    private final ImageService chatService;
 
-    @Autowired
-    private OpenAIChatService openAIChatService;
+    public ImageController(ImageService chatService) {
+        this.chatService = chatService;
+    }
 
     @PostMapping("/textWithImageUrl")
     Mono<String> textWithImageUrl(@RequestBody Mono<TextWithImgUrlRequest> requestBody) {
@@ -35,7 +35,7 @@ public class ImageController {
 
     @PostMapping("/textWithImagePath")
     Mono<String> textWithImagePath(@RequestBody Mono<TextWithImgPathRequest> requestBody) {
-        return requestBody.flatMap(request -> chatService.getCompletionsWithImagePath(request.message(), request.imageType(), request.imagePath()));
+        return requestBody.flatMap(request -> chatService.getCompletionsWithImagePath(request.message(), request.imageType(), request.imagePath(), request.conversationId()));
     }
 
     @PostMapping(value = "/textWithImage", consumes = "multipart/form-data")
@@ -53,8 +53,16 @@ public class ImageController {
                                 DataBufferUtils.release(dataBuffer);
                                 MediaType contentType = MediaTypeFactory.getMediaType(fileData.filename())
                                         .orElse(MediaType.IMAGE_PNG);
-                                return chatService.getCompletionsWithImage(requestData.message(), contentType.getType() + "/" + contentType.getSubtype(), bytes);
+                                return chatService.getCompletionsWithImage(requestData.message(), contentType.getType() + "/" + contentType.getSubtype(), bytes, requestData.conversationId());
                             });
                 });
+    }
+
+    @PostMapping(value = "/generateImage", produces = MediaType.IMAGE_PNG_VALUE)
+    Mono<ResponseEntity<byte[]>> generateImage(@RequestBody GenerateImageRequest request) {
+        return chatService.generateImage(request.message(), request.quality(), request.height(), request.width())
+                .map(imageBytes -> ResponseEntity.ok()
+                        .contentType(MediaType.IMAGE_PNG)
+                        .body(imageBytes));
     }
 }

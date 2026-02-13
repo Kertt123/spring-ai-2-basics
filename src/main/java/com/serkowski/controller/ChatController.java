@@ -1,8 +1,7 @@
 package com.serkowski.controller;
 
 import com.serkowski.model.text.TextRequest;
-import com.serkowski.services.ChatService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.serkowski.services.ChatCompletionService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,9 +12,11 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/chat")
 public class ChatController {
 
+    private final ChatCompletionService chatService;
 
-    @Autowired
-    private ChatService chatService;
+    public ChatController(ChatCompletionService chatService) {
+        this.chatService = chatService;
+    }
 
     @PostMapping("/text")
     Mono<String> text(@RequestBody Mono<TextRequest> requestBody) {
