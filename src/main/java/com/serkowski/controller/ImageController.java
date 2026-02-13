@@ -4,7 +4,6 @@ import com.serkowski.model.image.TextWithImgPathRequest;
 import com.serkowski.model.image.TextWithImgUrlRequest;
 import com.serkowski.model.text.TextRequest;
 import com.serkowski.services.ChatService;
-import com.serkowski.services.OpenAIChatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.http.MediaType;
@@ -25,9 +24,6 @@ public class ImageController {
     @Autowired
     private ChatService chatService;
 
-    @Autowired
-    private OpenAIChatService openAIChatService;
-
     @PostMapping("/textWithImageUrl")
     Mono<String> textWithImageUrl(@RequestBody Mono<TextWithImgUrlRequest> requestBody) {
         return requestBody.flatMap(request -> chatService.getCompletionsWithImageUrl(request.message(), request.imageType(), request.imageUrl(), request.conversationId()));
@@ -35,7 +31,7 @@ public class ImageController {
 
     @PostMapping("/textWithImagePath")
     Mono<String> textWithImagePath(@RequestBody Mono<TextWithImgPathRequest> requestBody) {
-        return requestBody.flatMap(request -> chatService.getCompletionsWithImagePath(request.message(), request.imageType(), request.imagePath()));
+        return requestBody.flatMap(request -> chatService.getCompletionsWithImagePath(request.message(), request.imageType(), request.imagePath(), request.conversationId()));
     }
 
     @PostMapping(value = "/textWithImage", consumes = "multipart/form-data")
@@ -53,7 +49,7 @@ public class ImageController {
                                 DataBufferUtils.release(dataBuffer);
                                 MediaType contentType = MediaTypeFactory.getMediaType(fileData.filename())
                                         .orElse(MediaType.IMAGE_PNG);
-                                return chatService.getCompletionsWithImage(requestData.message(), contentType.getType() + "/" + contentType.getSubtype(), bytes);
+                                return chatService.getCompletionsWithImage(requestData.message(), contentType.getType() + "/" + contentType.getSubtype(), bytes, requestData.conversationId());
                             });
                 });
     }

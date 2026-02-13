@@ -47,7 +47,7 @@ public class ChatService {
         });
     }
 
-    public Mono<String> getCompletionsWithImagePath(String message, String imgType, String imgPath) {
+    public Mono<String> getCompletionsWithImagePath(String message, String imgType, String imgPath, String conversationId) {
         return Mono.defer(() -> {
             try {
                 ClassPathResource resource = new ClassPathResource(imgPath);
@@ -55,6 +55,7 @@ public class ChatService {
                         .user(userSpec -> userSpec
                                 .text(message)
                                 .media(MimeType.valueOf(imgType), resource))
+                        .advisors(a -> a.param(ChatMemory.CONVERSATION_ID, conversationId))
                         .stream()
                         .content()
                         .collect(Collectors.joining());
@@ -64,11 +65,12 @@ public class ChatService {
         });
     }
 
-    public Mono<String> getCompletionsWithImage(String message, String imgType, byte[] image) {
+    public Mono<String> getCompletionsWithImage(String message, String imgType, byte[] image, String conversationId) {
         return chatClient.prompt()
                 .user(userSpec -> userSpec
                         .text(message)
                         .media(MimeType.valueOf(imgType), new ByteArrayResource(image)))
+                .advisors(a -> a.param(ChatMemory.CONVERSATION_ID, conversationId))
                 .stream()
                 .content()
                 .collect(Collectors.joining());
