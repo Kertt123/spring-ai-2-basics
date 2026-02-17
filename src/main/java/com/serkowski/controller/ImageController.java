@@ -22,20 +22,20 @@ import tools.jackson.databind.ObjectMapper;
 @RequestMapping("/image")
 public class ImageController {
 
-    private final ImageService chatService;
+    private final ImageService imageService;
 
-    public ImageController(ImageService chatService) {
-        this.chatService = chatService;
+    public ImageController(ImageService imageService) {
+        this.imageService = imageService;
     }
 
     @PostMapping("/textWithImageUrl")
     Mono<String> textWithImageUrl(@RequestBody Mono<TextWithImgUrlRequest> requestBody) {
-        return requestBody.flatMap(request -> chatService.getCompletionsWithImageUrl(request.message(), request.imageType(), request.imageUrl(), request.conversationId()));
+        return requestBody.flatMap(request -> imageService.getCompletionsWithImageUrl(request.message(), request.imageType(), request.imageUrl(), request.conversationId()));
     }
 
     @PostMapping("/textWithImagePath")
     Mono<String> textWithImagePath(@RequestBody Mono<TextWithImgPathRequest> requestBody) {
-        return requestBody.flatMap(request -> chatService.getCompletionsWithImagePath(request.message(), request.imageType(), request.imagePath(), request.conversationId()));
+        return requestBody.flatMap(request -> imageService.getCompletionsWithImagePath(request.message(), request.imageType(), request.imagePath(), request.conversationId()));
     }
 
     @PostMapping(value = "/textWithImage", consumes = "multipart/form-data")
@@ -53,14 +53,14 @@ public class ImageController {
                                 DataBufferUtils.release(dataBuffer);
                                 MediaType contentType = MediaTypeFactory.getMediaType(fileData.filename())
                                         .orElse(MediaType.IMAGE_PNG);
-                                return chatService.getCompletionsWithImage(requestData.message(), contentType.getType() + "/" + contentType.getSubtype(), bytes, requestData.conversationId());
+                                return imageService.getCompletionsWithImage(requestData.message(), contentType.getType() + "/" + contentType.getSubtype(), bytes, requestData.conversationId());
                             });
                 });
     }
 
     @PostMapping(value = "/generateImage", produces = MediaType.IMAGE_PNG_VALUE)
     Mono<ResponseEntity<byte[]>> generateImage(@RequestBody GenerateImageRequest request) {
-        return chatService.generateImage(request.message(), request.quality(), request.height(), request.width())
+        return imageService.generateImage(request.message(), request.quality(), request.height(), request.width())
                 .map(imageBytes -> ResponseEntity.ok()
                         .contentType(MediaType.IMAGE_PNG)
                         .body(imageBytes));

@@ -6,7 +6,10 @@ This project demonstrates the capabilities of the Spring AI framework, showcasin
 
 This project includes examples of the following Spring AI features:
 
-*   **Chat Completion:** Engage in conversational AI using OpenAI's chat models. The application supports maintaining conversation history through the use of `ChatMemory` advisors.
+*   **Chat Completion:** Engage in conversational AI using Open AI chat models. The application supports maintaining
+    conversation history in a PostgreSQL database using `JdbcChatMemoryRepository`.
+*   **Structured Output:** Convert natural language into structured data (POJOs), for example, to get a list of movie
+    recommendations in a specific format.
 *   **Image Generation:** Dynamically generate images from text prompts using the DALL-E model.
 *   **Image Comprehension:** Analyze and describe images provided via URL, local path, or direct upload.
 *   **Audio Transcription:** Convert audio files (MP4) into text.
@@ -19,6 +22,8 @@ This project includes examples of the following Spring AI features:
 *   Java 25
 *   Maven
 *   An OpenAI API key
+*   Docker and Docker Compose
+
 
 ### Configuration
 
@@ -28,26 +33,39 @@ This project includes examples of the following Spring AI features:
     spring.ai.openai.api-key=<YOUR_API_KEY>
     spring.ai.openai.chat.options.model=gpt-4o
     spring.ai.openai.image.options.model=dall-e-3
+    spring.datasource.url=jdbc:postgresql://localhost:5432/postgres
+    spring.datasource.username=postgres
+    spring.datasource.password=postgres
+    spring.jpa.hibernate.ddl-auto=create
     ```
 
 ### Running the Application
 
-1.  Build the project using Maven:
+1.  Start the PostgreSQL database using Docker Compose:
+    ```bash
+    docker-compose up -d
+    ```
+
+2.  Build the project using Maven:
     ```bash
     mvn clean install
     ```
-2.  Run the Spring Boot application:
+3.  Run the Spring Boot application:
     ```bash
     mvn spring-boot:run
     ```
+
 The application will be available at `http://localhost:8080`.
 
 ## API Endpoints
 
 ### Chat
+
 *   `POST /chat/text`: Get a text completion from the model.
+*   `POST /chat/movieRecommendation`: Get a structured movie recommendation based on a text prompt.
 
 ### Image
+
 *   `POST /image/generateImage`: Generate an image from a text prompt.
 *   `POST /image/textWithImageUrl`: Analyze an image from a URL.
 *   `POST /image/textWithImagePath`: Analyze an image from a local path.

@@ -2,6 +2,7 @@ package com.serkowski.services;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.memory.ChatMemory;
+import org.springframework.ai.image.ImageOptions;
 import org.springframework.ai.image.ImagePrompt;
 import org.springframework.ai.image.ImageResponse;
 import org.springframework.ai.openai.OpenAiImageModel;
@@ -14,7 +15,6 @@ import org.springframework.util.MimeType;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
-import java.util.Base64;
 import java.util.stream.Collectors;
 
 @Service
@@ -77,25 +77,24 @@ public class ImageService {
 
     public Mono<byte[]> generateImage(String prompt, String quality, int height, int width) {
         return Mono.defer(() -> {
-                    try {
-                        ImageResponse response = openAiImageModel.call(
-                                new ImagePrompt(prompt,
-                                        OpenAiImageOptions.builder()
-                                                .quality(quality)
-                                                .N(1)
-                                                .height(height)
-                                                .responseFormat("b64_json")
-                                                .width(width).build())
+            try {
+                ImageResponse response = openAiImageModel.call(
+                        new ImagePrompt(prompt,
+                                OpenAiImageOptions.builder()
+                                        .quality(quality)
+                                        .N(1)
+                                        .height(height)
+                                        .width(width)
+                                        .responseFormat("b64_json")
+                                        .build())
 
-                        );
-                        String b64Json = response.getResult().getOutput().getB64Json();
-                        byte[] decodedBytes = Base64.getDecoder().decode(b64Json);
-                        return Mono.just(decodedBytes);
-                    } catch (Exception e) {
-                        return Mono.error(new IllegalArgumentException("Error during image generation", e));
-                    }
-                })
-                .subscribeOn(Schedulers.boundedElastic());
+                );
+                String baseResponse = response.getResult().getOutput().getB64Json();
+                return Mono.just(java.util.Base64.getDecoder().decode(baseResponse));
+            } catch (Exception e) {
+                return Mono.error(new IllegalArgumentException("Error during image generation", e));
+            }
+        }).subscribeOn(Schedulers.boundedElastic());
     }
 }
 
