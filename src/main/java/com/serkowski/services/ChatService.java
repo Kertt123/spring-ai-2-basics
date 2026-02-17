@@ -1,5 +1,6 @@
 package com.serkowski.services;
 
+import com.serkowski.model.text.MovieRecommendationResponse;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.core.io.ByteArrayResource;
@@ -8,6 +9,7 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MimeType;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.util.stream.Collectors;
 
@@ -74,5 +76,15 @@ public class ChatService {
                 .stream()
                 .content()
                 .collect(Collectors.joining());
+    }
+
+    public Mono<MovieRecommendationResponse> movieRecommendation(String message, String conversationId) {
+        return Mono.fromCallable(() -> chatClient.prompt()
+                        .system("You are a movie recommendation assistant. Based on the user's preferences, recommend 5 movies.")
+                        .user(message)
+                        .advisors(a -> a.param(ChatMemory.CONVERSATION_ID, conversationId))
+                        .call()
+                        .entity(MovieRecommendationResponse.class))
+                .subscribeOn(Schedulers.boundedElastic());
     }
 }

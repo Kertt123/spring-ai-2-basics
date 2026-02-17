@@ -1,5 +1,6 @@
 package com.serkowski.controller;
 
+import com.serkowski.model.text.MovieRecommendationResponse;
 import com.serkowski.model.text.TextRequest;
 import com.serkowski.services.ChatService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,5 +21,10 @@ public class ChatController {
     @PostMapping("/text")
     Mono<String> text(@RequestBody Mono<TextRequest> requestBody) {
         return requestBody.flatMap(request -> chatService.getCompletions(request.message(), request.conversationId()));
+    }
+
+    @PostMapping("/movieRecommendation")
+    Mono<MovieRecommendationResponse> movieRecommendation(@RequestBody Mono<TextRequest> requestBody) {
+        return requestBody.flatMap(request -> chatService.movieRecommendation(request.message(), request.conversationId()));
     }
 }
