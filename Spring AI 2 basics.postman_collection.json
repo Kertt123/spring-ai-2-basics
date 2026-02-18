@@ -1,9 +1,10 @@
 {
   "info": {
-    "_postman_id": "f5dcd30b-897d-4d54-8645-352ceebbd6ab",
+    "_postman_id": "d91b6b75-474f-4a06-a391-b720b9b97727",
     "name": "Spring AI 2 basics",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "23929431"
+    "_exporter_id": "23929431",
+    "_collection_link": "https://go.postman.co/collection/23929431-d91b6b75-474f-4a06-a391-b720b9b97727?source=collection_link"
   },
   "item": [
     {
@@ -13,7 +14,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"message\": \"Hello!\",\n    \"conversationId\": \"123\"\n}",
+          "raw": "{\n    \"message\": \"Hi\",\n    \"conversationId\": \"1\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -42,7 +43,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"message\": \"Hello!\",\n    \"conversationId\": \"123\"\n}",
+          "raw": "{\n    \"message\": \"I need action movies\",\n    \"conversationId\": \"123\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -50,7 +51,7 @@
           }
         },
         "url": {
-          "raw": "http://localhost:8080/chat/text",
+          "raw": "http://localhost:8080/chat/movieRecommendation",
           "protocol": "http",
           "host": [
             "localhost"
@@ -58,7 +59,7 @@
           "port": "8080",
           "path": [
             "chat",
-            "text"
+            "movieRecommendation"
           ]
         }
       },
@@ -71,7 +72,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"message\": \"Please describe me the image\",\n    \"imageType\": \"image/png\",\n    \"imageUrl\": \"https://m.media-amazon.com/images/S/pv-target-images/334f00b53cf3ef848ea7048b25711bc98e8236ce1685a096990c80d0965835ea.png\",\n    \"conversationId\": \"123\"\n}",
+          "raw": "{\n    \"message\": \"Please describe me this image\",\n    \"imageType\": \"image/png\",\n    \"imageUrl\": \"https://m.media-amazon.com/images/S/pv-target-images/334f00b53cf3ef848ea7048b25711bc98e8236ce1685a096990c80d0965835ea.png\",\n    \"conversationId\": \"3\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -105,7 +106,7 @@
               "key": "file",
               "type": "file",
               "uuid": "15538866-3589-4b66-8c44-74ae4b6d4b7c",
-              "src": "/Users/Krzysztof_Serkowski/Downloads/dialx-banner.png"
+              "src": "/Users/Krzysztof_Serkowski/Desktop/Workspace/Learn/ai/DIAL/spring-ai-2-basics/src/main/resources/dialx-banner.png"
             },
             {
               "key": "data",
@@ -137,7 +138,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"message\": \"Please describe me the image\",\n    \"imageType\": \"image/png\",\n    \"imagePath\": \"dialx-banner.png\"\n}",
+          "raw": "{\n    \"message\": \"Please describe me this image\",\n    \"imageType\": \"image/png\",\n    \"imagePath\": \"dialx-banner.png\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -223,10 +224,15 @@
         "method": "POST",
         "header": [],
         "body": {
-          "mode": "file",
-          "file": {
-            "src": "/Users/Krzysztof_Serkowski/Documents/testy/Nowe nagranie 3.m4a"
-          }
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "file",
+              "type": "file",
+              "uuid": "0485ec9a-ef84-40f7-8404-d2aabd17d58f",
+              "src": "/Users/Krzysztof_Serkowski/Documents/testy/Nowe nagranie 3.m4a"
+            }
+          ]
         },
         "url": {
           "raw": "http://localhost:8080/audio/transcribe",

@@ -5,6 +5,7 @@ import org.springframework.ai.openai.OpenAiAudioSpeechModel;
 import org.springframework.ai.openai.OpenAiAudioSpeechOptions;
 import org.springframework.ai.openai.api.OpenAiAudioApi;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -21,17 +22,10 @@ public class AudioService {
         this.openAiAudioSpeechModel = openAiAudioSpeechModel;
     }
 
-    public Mono<String> transcribeAudio(byte[] audioData) {
+    public Mono<String> transcribeAudio(Resource resource) {
         return Mono.defer(() -> {
             try {
-                ByteArrayResource audioResource = new ByteArrayResource(audioData) {
-                    @Override
-                    public String getFilename() {
-                        //bypass file name mandatory
-                        return "audio.m4a";
-                    }
-                };
-                String transcription = transcriptionModel.transcribe(audioResource);
+                String transcription = transcriptionModel.transcribe(resource);
                 return Mono.just(transcription);
             } catch (Exception e) {
                 return Mono.error(new IllegalArgumentException("Error during audio transcription", e));
