@@ -2,6 +2,8 @@ package com.serkowski.services;
 
 import org.springframework.ai.audio.transcription.TranscriptionModel;
 import org.springframework.ai.openai.OpenAiAudioSpeechModel;
+import org.springframework.ai.openai.OpenAiAudioSpeechOptions;
+import org.springframework.ai.openai.api.OpenAiAudioApi;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -38,7 +40,9 @@ public class AudioService {
     }
 
     public Flux<byte[]> generateAudio(String message) {
-        return openAiAudioSpeechModel.stream(message);
+        return openAiAudioSpeechModel.stream(message, OpenAiAudioSpeechOptions.builder()
+                .voice(OpenAiAudioApi.SpeechRequest.Voice.FABLE)
+                .build());
     }
 }
 
