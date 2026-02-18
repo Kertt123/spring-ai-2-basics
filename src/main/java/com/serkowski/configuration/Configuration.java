@@ -3,7 +3,7 @@ package com.serkowski.configuration;
 import com.serkowski.services.ChatService;
 import com.serkowski.services.DialBucketClient;
 import com.serkowski.services.DialWebService;
-import com.serkowski.services.PersonalAdvisor;
+import com.serkowski.services.ShrekGuardAdvisor;
 import org.springframework.ai.azure.openai.AzureOpenAiChatOptions;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
@@ -36,8 +36,9 @@ public class Configuration {
                                         .maxMessages(30)
                                         .build())
                                 .build(),
+//                        new SafeGuardAdvisor(List.of("Shrek", "Fiona", "Donkey")),
                         new SimpleLoggerAdvisor(),
-                        new PersonalAdvisor()
+                        new ShrekGuardAdvisor()
                 )
                 .defaultOptions(AzureOpenAiChatOptions.builder()
                         .deploymentName("gpt-4o")
