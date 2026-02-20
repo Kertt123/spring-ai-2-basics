@@ -8,6 +8,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MimeType;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
@@ -29,6 +30,14 @@ public class ChatService {
                 .stream()
                 .content()
                 .collect(Collectors.joining());
+    }
+
+    public Flux<String> getCompletionsStream(String message, String conversationId) {
+        return chatClient.prompt()
+                .user(message)
+                .advisors(a -> a.param(ChatMemory.CONVERSATION_ID, conversationId))
+                .stream()
+                .content();
     }
 
     public Mono<String> getCompletionsWithImageUrl(String message, String imgType, String imageUrl, String conversationId) {

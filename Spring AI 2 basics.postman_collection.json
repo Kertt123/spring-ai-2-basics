@@ -14,7 +14,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"message\": \"Hi\",\n    \"conversationId\": \"1\"\n}",
+          "raw": "{\n    \"message\": \"What I like?\",\n    \"conversationId\": \"4442\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -37,13 +37,42 @@
       "response": []
     },
     {
+      "name": "Chat SSE",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"message\": \"Hi\",\n    \"conversationId\": \"123124\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/chat/textStream",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "chat",
+            "textStream"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
       "name": "Chat Structured",
       "request": {
         "method": "POST",
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"message\": \"I need action movies\",\n    \"conversationId\": \"123\"\n}",
+          "raw": "{\n    \"message\": \"I need action movies\",\n    \"conversationId\": \"4125\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -106,7 +135,7 @@
               "key": "file",
               "type": "file",
               "uuid": "15538866-3589-4b66-8c44-74ae4b6d4b7c",
-              "src": "/Users/Krzysztof_Serkowski/Desktop/Workspace/Learn/ai/DIAL/spring-ai-2-basics/src/main/resources/dialx-banner.png"
+              "src": "/Users/Krzysztof_Serkowski/Documents/demo/dialx-banner.png"
             },
             {
               "key": "data",
@@ -230,7 +259,7 @@
               "key": "file",
               "type": "file",
               "uuid": "0485ec9a-ef84-40f7-8404-d2aabd17d58f",
-              "src": "/Users/Krzysztof_Serkowski/Documents/testy/Nowe nagranie 3.m4a"
+              "src": "/Users/Krzysztof_Serkowski/Documents/demo/audioExample2.mp3"
             }
           ]
         },
