@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/imageDial")
@@ -21,16 +20,16 @@ public class DialImageController {
 
 
     @PostMapping("/textWithImagePathDial")
-    Mono<String> textWithImagePathDial(@RequestBody Mono<TextWithImgPathRequest> requestBody) {
-        return requestBody.flatMap(request -> dialWebService.getCompletionsWithImagePathDIAL(request.message(), request.imageType(), request.imagePath()));
+    String textWithImagePathDial(@RequestBody TextWithImgPathRequest request) {
+        return dialWebService.getCompletionsWithImagePathDIAL(request.message(), request.imageType(), request.imagePath());
     }
 
     @PostMapping(value = "/generateImage", produces = MediaType.IMAGE_PNG_VALUE)
-    Mono<ResponseEntity<byte[]>> generateImage(@RequestBody GenerateImageRequest request) {
-        return dialWebService.generateImage(request.message(), request.size(), request.style(), request.quality())
-                .map(imageBytes -> ResponseEntity.ok()
-                        .contentType(MediaType.IMAGE_PNG)
-                        .body(imageBytes));
+    ResponseEntity<byte[]> generateImage(@RequestBody GenerateImageRequest request) {
+        byte[] imageBytes = dialWebService.generateImage(request.message(), request.size(), request.style(), request.quality());
+        return ResponseEntity.ok()
+                .contentType(MediaType.IMAGE_PNG)
+                .body(imageBytes);
     }
 
 

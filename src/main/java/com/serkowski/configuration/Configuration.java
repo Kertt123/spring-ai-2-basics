@@ -13,9 +13,12 @@ import org.springframework.ai.chat.memory.repository.jdbc.JdbcChatMemoryReposito
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.client.JdkClientHttpRequestFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.web.reactive.function.client.ExchangeStrategies;
-import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.client.RestClient;
+
+import java.net.http.HttpClient;
+import java.time.Duration;
 
 @org.springframework.context.annotation.Configuration
 public class Configuration {
@@ -53,25 +56,26 @@ public class Configuration {
     }
 
     @Bean
-    public WebClient webClient() {
-        int bufferSize = 16 * 1024 * 1024;
-        return WebClient.builder()
-                .exchangeStrategies(ExchangeStrategies.builder()
-                        .codecs(configurer -> configurer
-                                .defaultCodecs()
-                                .maxInMemorySize(bufferSize))
-                        .build())
+    public RestClient restClient() {
+        JdkClientHttpRequestFactory requestFactory = new JdkClientHttpRequestFactory(
+                HttpClient.newBuilder()
+                        .connectTimeout(Duration.ofMinutes(2))
+                        .build()
+        );
+        requestFactory.setReadTimeout(Duration.ofMinutes(2));
+        return RestClient.builder()
+                .requestFactory(requestFactory)
                 .build();
     }
 
     @Bean
-    public DialBucketClient dialBucketClient(WebClient webClient, @Value("${spring.ai.azure.openai.endpoint}") String url, @Value("${spring.ai.azure.openai.api-key}") String apiKey) {
-        return new DialBucketClient(webClient, url, apiKey);
+    public DialBucketClient dialBucketClient(RestClient restClient, @Value("${spring.ai.azure.openai.endpoint}") String url, @Value("${spring.ai.azure.openai.api-key}") String apiKey) {
+        return new DialBucketClient(restClient, url, apiKey);
     }
 
     @Bean
-    public DialWebService dialWebService(WebClient webClient, @Value("${spring.ai.azure.openai.endpoint}") String url, @Value("${spring.ai.azure.openai.api-key}") String apiKey, DialBucketClient dialBucketClient) {
-        return new DialWebService(webClient, url, apiKey, dialBucketClient);
+    public DialWebService dialWebService(RestClient restClient, @Value("${spring.ai.azure.openai.endpoint}") String url, @Value("${spring.ai.azure.openai.api-key}") String apiKey, DialBucketClient dialBucketClient) {
+        return new DialWebService(restClient, url, apiKey, dialBucketClient);
     }
 
 
