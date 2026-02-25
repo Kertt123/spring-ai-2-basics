@@ -1,22 +1,20 @@
 package com.serkowski.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.serkowski.model.image.GenerateImageRequest;
 import com.serkowski.model.image.TextWithImgPathRequest;
 import com.serkowski.model.image.TextWithImgUrlRequest;
 import com.serkowski.model.text.TextRequest;
 import com.serkowski.services.ImageService;
-import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.http.MediaType;
 import org.springframework.http.MediaTypeFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
-import reactor.core.publisher.Mono;
-import tools.jackson.databind.ObjectMapper;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/image")
@@ -29,40 +27,34 @@ public class ImageController {
     }
 
     @PostMapping("/textWithImageUrl")
-    Mono<String> textWithImageUrl(@RequestBody Mono<TextWithImgUrlRequest> requestBody) {
-        return requestBody.flatMap(request -> imageService.getCompletionsWithImageUrl(request.message(), request.imageType(), request.imageUrl(), request.conversationId()));
+    String textWithImageUrl(@RequestBody TextWithImgUrlRequest request) {
+        return imageService.getCompletionsWithImageUrl(request.message(), request.imageType(), request.imageUrl(), request.conversationId());
     }
 
     @PostMapping("/textWithImagePath")
-    Mono<String> textWithImagePath(@RequestBody Mono<TextWithImgPathRequest> requestBody) {
-        return requestBody.flatMap(request -> imageService.getCompletionsWithImagePath(request.message(), request.imageType(), request.imagePath(), request.conversationId()));
+    String textWithImagePath(@RequestBody TextWithImgPathRequest request) {
+        return imageService.getCompletionsWithImagePath(request.message(), request.imageType(), request.imagePath(), request.conversationId());
     }
 
     @PostMapping(value = "/textWithImage", consumes = "multipart/form-data")
-    Mono<String> textWithImagePath(
-            @RequestPart("file") Mono<FilePart> file,
-            @RequestPart("data") Mono<String> request) {
-        return Mono.zip(file, request)
-                .flatMap(tuple -> {
-                    FilePart fileData = tuple.getT1();
-                    TextRequest requestData = new ObjectMapper().readValue(tuple.getT2(), TextRequest.class);
-                    return DataBufferUtils.join(fileData.content())
-                            .flatMap(dataBuffer -> {
-                                byte[] bytes = new byte[dataBuffer.readableByteCount()];
-                                dataBuffer.read(bytes);
-                                DataBufferUtils.release(dataBuffer);
-                                MediaType contentType = MediaTypeFactory.getMediaType(fileData.filename())
-                                        .orElse(MediaType.IMAGE_PNG);
-                                return imageService.getCompletionsWithImage(requestData.message(), contentType.getType() + "/" + contentType.getSubtype(), bytes, requestData.conversationId());
-                            });
-                });
+    String textWithImage(
+            @RequestPart("file") MultipartFile file,
+            @RequestPart("data") String requestJson) {
+        try {
+            TextRequest requestData = new ObjectMapper().readValue(requestJson, TextRequest.class);
+            byte[] bytes = file.getBytes();
+            MediaType contentType = MediaTypeFactory.getMediaType(file.getResource())
+                    .orElse(MediaType.IMAGE_PNG);
+            return imageService.getCompletionsWithImage(requestData.message(), contentType.getType() + "/" + contentType.getSubtype(), bytes, requestData.conversationId());
+        } catch (Exception e) {
+             throw new RuntimeException(e);
+        }
     }
 
     @PostMapping(value = "/generateImage", produces = MediaType.IMAGE_PNG_VALUE)
-    Mono<ResponseEntity<byte[]>> generateImage(@RequestBody GenerateImageRequest request) {
-        return imageService.generateImage(request.message(), request.quality(), request.height(), request.width())
-                .map(imageBytes -> ResponseEntity.ok()
-                        .contentType(MediaType.IMAGE_PNG)
-                        .body(imageBytes));
+    ResponseEntity<byte[]> generateImage(@RequestBody GenerateImageRequest request) {
+        return ResponseEntity.ok()
+                .contentType(MediaType.IMAGE_PNG)
+                .body(imageService.generateImage(request.message(), request.quality(), request.height(), request.width()));
     }
 }

@@ -3,7 +3,6 @@ package com.serkowski.configuration;
 import com.serkowski.services.AudioService;
 import com.serkowski.services.ChatCompletionService;
 import com.serkowski.services.ImageService;
-import com.serkowski.services.ShrekGuardAdvisor;
 import org.springframework.ai.audio.transcription.TranscriptionModel;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
@@ -37,8 +36,7 @@ public class Configuration {
                                         .maxMessages(30)
                                         .build())
                                 .build(),
-                        new SimpleLoggerAdvisor(),
-                        new ShrekGuardAdvisor()
+                        new SimpleLoggerAdvisor()
                 )
                 .build();
     }
