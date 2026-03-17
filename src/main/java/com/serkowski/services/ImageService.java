@@ -69,11 +69,11 @@ public class ImageService {
             ImageResponse response = openAiImageModel.call(
                     new ImagePrompt(prompt,
                             OpenAiImageOptions.builder()
+                                    .model("gpt-image-1")
                                     .quality(quality)
                                     .N(1)
                                     .height(height)
                                     .width(width)
-                                    .responseFormat("b64_json")
                                     .build())
 
             );
