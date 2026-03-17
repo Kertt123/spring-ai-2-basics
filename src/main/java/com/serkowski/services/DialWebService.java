@@ -65,7 +65,7 @@ public class DialWebService {
     public byte[] generateImage(String prompt, String size, String style, String quality) {
         Response response = restClient
                 .post()
-                .uri(url + "/openai/deployments/dall-e-3/chat/completions")
+                .uri(url + "/openai/deployments/gpt-image-1-mini-2025-10-06/chat/completions")
                 .header("api-key", apiKey)
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .body(new Request(List.of(new RequestMessage("user", prompt, null, new CustomField(new ConfigurationRequest(size, style, quality)))), false))
