@@ -1,8 +1,6 @@
 package com.serkowski.configuration;
 
 import com.serkowski.services.ChatService;
-import com.serkowski.services.DialBucketClient;
-import com.serkowski.services.DialWebService;
 import com.serkowski.services.ShrekGuardAdvisor;
 import org.springframework.ai.azure.openai.AzureOpenAiChatOptions;
 import org.springframework.ai.chat.client.ChatClient;
@@ -11,7 +9,6 @@ import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
 import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 import org.springframework.ai.chat.memory.repository.jdbc.JdbcChatMemoryRepository;
 import org.springframework.ai.chat.model.ChatModel;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.client.JdkClientHttpRequestFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -67,16 +64,5 @@ public class Configuration {
                 .requestFactory(requestFactory)
                 .build();
     }
-
-    @Bean
-    public DialBucketClient dialBucketClient(RestClient restClient, @Value("${spring.ai.azure.openai.endpoint}") String url, @Value("${spring.ai.azure.openai.api-key}") String apiKey) {
-        return new DialBucketClient(restClient, url, apiKey);
-    }
-
-    @Bean
-    public DialWebService dialWebService(RestClient restClient, @Value("${spring.ai.azure.openai.endpoint}") String url, @Value("${spring.ai.azure.openai.api-key}") String apiKey, DialBucketClient dialBucketClient) {
-        return new DialWebService(restClient, url, apiKey, dialBucketClient);
-    }
-
 
 }
