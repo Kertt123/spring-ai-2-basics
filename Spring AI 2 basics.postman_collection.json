@@ -14,7 +14,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"message\": \"Hi\",\n    \"conversationId\": \"1\"\n}",
+          "raw": "{\n    \"message\": \"Tell my about characters in Shrek movie\",\n    \"conversationId\": \"12312\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -37,13 +37,42 @@
       "response": []
     },
     {
+      "name": "Chat SSE",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"message\": \"Hi\",\n    \"conversationId\": \"123949\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/chat/textStream",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "chat",
+            "textStream"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
       "name": "Chat Structured",
       "request": {
         "method": "POST",
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"message\": \"I need action movies\",\n    \"conversationId\": \"123\"\n}",
+          "raw": "{\n    \"message\": \"I need action movies\",\n    \"conversationId\": \"523\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -106,7 +135,7 @@
               "key": "file",
               "type": "file",
               "uuid": "15538866-3589-4b66-8c44-74ae4b6d4b7c",
-              "src": "/Users/Krzysztof_Serkowski/Desktop/Workspace/Learn/ai/DIAL/spring-ai-2-basics/src/main/resources/dialx-banner.png"
+              "src": "/Users/Krzysztof_Serkowski/Documents/demo/dialx-banner.png"
             },
             {
               "key": "data",
@@ -132,71 +161,13 @@
       "response": []
     },
     {
-      "name": "DIAL chat with img",
-      "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n    \"message\": \"Please describe me this image\",\n    \"imageType\": \"image/png\",\n    \"imagePath\": \"dialx-banner.png\"\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "http://localhost:8080/imageDial/textWithImagePathDial",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "8080",
-          "path": [
-            "imageDial",
-            "textWithImagePathDial"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "DIAL Image Generation",
-      "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n    \"message\": \"Please generate for me an image of a daschund\",\n    \"size\": \"1024x1024\",\n    \"style\": \"vivid\",\n    \"quality\": \"standard\"\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "http://localhost:8080/imageDial/generateImage",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "8080",
-          "path": [
-            "imageDial",
-            "generateImage"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
       "name": "OpenAI Image Generation",
       "request": {
         "method": "POST",
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"message\": \"Please generate for me an image of a daschund\",\n    \"quality\": \"standard\",\n    \"height\": 1024,\n    \"width\": 1024\n}",
+          "raw": "{\n    \"message\": \"Please generate for me an image of a daschund\",\n    \"quality\": \"medium\",\n    \"height\": 1024,\n    \"width\": 1024\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -230,7 +201,7 @@
               "key": "file",
               "type": "file",
               "uuid": "0485ec9a-ef84-40f7-8404-d2aabd17d58f",
-              "src": "/Users/Krzysztof_Serkowski/Documents/testy/Nowe nagranie 3.m4a"
+              "src": "/Users/Krzysztof_Serkowski/Documents/demo/audioExample2.mp3"
             }
           ]
         },
