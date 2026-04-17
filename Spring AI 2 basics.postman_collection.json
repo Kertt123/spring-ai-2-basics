@@ -14,7 +14,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"message\": \"What I like?\",\n    \"conversationId\": \"4442\"\n}",
+          "raw": "{\n    \"message\": \"Tell my about characters in Shrek movie\",\n    \"conversationId\": \"12312\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -43,7 +43,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"message\": \"Hi\",\n    \"conversationId\": \"123124\"\n}",
+          "raw": "{\n    \"message\": \"Hi\",\n    \"conversationId\": \"123949\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -72,7 +72,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"message\": \"I need action movies\",\n    \"conversationId\": \"4125\"\n}",
+          "raw": "{\n    \"message\": \"I need action movies\",\n    \"conversationId\": \"523\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -161,71 +161,13 @@
       "response": []
     },
     {
-      "name": "DIAL chat with img",
-      "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n    \"message\": \"Please describe me this image\",\n    \"imageType\": \"image/png\",\n    \"imagePath\": \"dialx-banner.png\"\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "http://localhost:8080/imageDial/textWithImagePathDial",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "8080",
-          "path": [
-            "imageDial",
-            "textWithImagePathDial"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "DIAL Image Generation",
-      "request": {
-        "method": "POST",
-        "header": [],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n    \"message\": \"Please generate for me an image of a daschund\",\n    \"size\": \"1024x1024\",\n    \"style\": \"vivid\",\n    \"quality\": \"standard\"\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        },
-        "url": {
-          "raw": "http://localhost:8080/imageDial/generateImage",
-          "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "8080",
-          "path": [
-            "imageDial",
-            "generateImage"
-          ]
-        }
-      },
-      "response": []
-    },
-    {
       "name": "OpenAI Image Generation",
       "request": {
         "method": "POST",
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"message\": \"Please generate for me an image of a daschund\",\n    \"quality\": \"standard\",\n    \"height\": 1024,\n    \"width\": 1024\n}",
+          "raw": "{\n    \"message\": \"Please generate for me an image of a daschund\",\n    \"quality\": \"medium\",\n    \"height\": 1024,\n    \"width\": 1024\n}",
           "options": {
             "raw": {
               "language": "json"
