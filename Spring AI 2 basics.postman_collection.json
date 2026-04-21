@@ -14,7 +14,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"message\": \"Tell my about characters in Shrek movie\",\n    \"conversationId\": \"12312\"\n}",
+          "raw": "{\n    \"message\": \"Hi!\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -43,7 +43,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"message\": \"Hi\",\n    \"conversationId\": \"123949\"\n}",
+          "raw": "{\n    \"message\": \"Hi\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -72,7 +72,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"message\": \"I need action movies\",\n    \"conversationId\": \"523\"\n}",
+          "raw": "{\n    \"message\": \"I need action movies\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -89,6 +89,35 @@
           "path": [
             "chat",
             "movieRecommendation"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Chat With Memory",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"message\": \"Hi!\",\n    \"conversationId\": \"222\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/chat/textWithMemory",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "chat",
+            "textWithMemory"
           ]
         }
       },
