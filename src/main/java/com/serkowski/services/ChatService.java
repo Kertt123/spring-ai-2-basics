@@ -15,7 +15,14 @@ public class ChatService {
         this.chatClient = chatClient;
     }
 
-    public String getCompletions(String message, String conversationId) {
+    public String chat(String message) {
+        return chatClient.prompt()
+                .user(message)
+                .call()
+                .content();
+    }
+
+    public String chatWithMemory(String message, String conversationId) {
         return chatClient.prompt()
                 .user(message)
                 .advisors(a -> a.param(ChatMemory.CONVERSATION_ID, conversationId))
@@ -23,19 +30,17 @@ public class ChatService {
                 .content();
     }
 
-    public Flux<String> getCompletionsStream(String message, String conversationId) {
+    public Flux<String> chatStream(String message) {
         return chatClient.prompt()
                 .user(message)
-                .advisors(a -> a.param(ChatMemory.CONVERSATION_ID, conversationId))
                 .stream()
                 .content();
     }
 
-    public MovieRecommendationResponse movieRecommendation(String message, String conversationId) {
+    public MovieRecommendationResponse movieRecommendation(String message) {
         return chatClient.prompt()
                 .system("You are a movie recommendation assistant. Based on the user's preferences, recommend 5 movies.")
                 .user(message)
-                .advisors(a -> a.param(ChatMemory.CONVERSATION_ID, conversationId))
                 .call()
                 .entity(MovieRecommendationResponse.class);
     }

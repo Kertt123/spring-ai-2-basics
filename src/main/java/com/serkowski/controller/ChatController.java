@@ -2,6 +2,7 @@ package com.serkowski.controller;
 
 import com.serkowski.model.text.MovieRecommendationResponse;
 import com.serkowski.model.text.TextRequest;
+import com.serkowski.model.text.TextRequestSimple;
 import com.serkowski.services.ChatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -20,17 +21,22 @@ public class ChatController {
     private ChatService chatService;
 
     @PostMapping("/text")
-    String text(@RequestBody TextRequest request) {
-        return chatService.getCompletions(request.message(), request.conversationId());
+    String text(@RequestBody TextRequestSimple request) {
+        return chatService.chat(request.message());
+    }
+
+    @PostMapping("/textWithMemory")
+    String textWithMemory(@RequestBody TextRequest request) {
+        return chatService.chatWithMemory(request.message(), request.conversationId());
     }
 
     @PostMapping(value = "/textStream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    Flux<String> textStream(@RequestBody TextRequest request) {
-        return chatService.getCompletionsStream(request.message(), request.conversationId());
+    Flux<String> textStream(@RequestBody TextRequestSimple request) {
+        return chatService.chatStream(request.message());
     }
 
     @PostMapping("/movieRecommendation")
-    MovieRecommendationResponse movieRecommendation(@RequestBody TextRequest request) {
-        return chatService.movieRecommendation(request.message(), request.conversationId());
+    MovieRecommendationResponse movieRecommendation(@RequestBody TextRequestSimple request) {
+        return chatService.movieRecommendation(request.message());
     }
 }
