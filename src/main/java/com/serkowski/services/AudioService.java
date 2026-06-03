@@ -4,11 +4,8 @@ import org.springframework.ai.audio.transcription.TranscriptionModel;
 import org.springframework.ai.audio.tts.TextToSpeechPrompt;
 import org.springframework.ai.openai.OpenAiAudioSpeechModel;
 import org.springframework.ai.openai.OpenAiAudioSpeechOptions;
-import org.springframework.ai.openai.api.OpenAiAudioApi;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
 
 @Service
 public class AudioService {
@@ -31,7 +28,7 @@ public class AudioService {
 
     public byte[] generateAudio(String message) {
         var prompt = new TextToSpeechPrompt(message, OpenAiAudioSpeechOptions.builder()
-                .voice(OpenAiAudioApi.SpeechRequest.Voice.FABLE)
+                .voice(OpenAiAudioSpeechOptions.Voice.FABLE)
                 .build());
         return openAiAudioSpeechModel.call(prompt).getResult().getOutput();
     }
