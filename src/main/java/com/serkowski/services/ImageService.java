@@ -71,7 +71,6 @@ public class ImageService {
                             OpenAiImageOptions.builder()
                                     .model("gpt-image-1")
                                     .quality(quality)
-                                    .N(1)
                                     .height(height)
                                     .width(width)
                                     .build())
