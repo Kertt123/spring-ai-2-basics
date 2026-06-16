@@ -1,8 +1,9 @@
 package com.serkowski.configuration;
 
+import com.anthropic.models.messages.Model;
 import com.serkowski.services.ChatService;
 import com.serkowski.services.ShrekGuardAdvisor;
-import org.springframework.ai.azure.openai.AzureOpenAiChatOptions;
+import org.springframework.ai.anthropic.AnthropicChatOptions;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
@@ -40,9 +41,8 @@ public class Configuration {
                         new SimpleLoggerAdvisor(),
                         new ShrekGuardAdvisor()
                 )
-                .defaultOptions(AzureOpenAiChatOptions.builder()
-                        .deploymentName("gpt-4o")
-                        .build())
+                .defaultOptions(AnthropicChatOptions.builder()
+                        .model(Model.CLAUDE_SONNET_4_6))
                 .build();
     }
 
