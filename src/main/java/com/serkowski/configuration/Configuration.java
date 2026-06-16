@@ -1,7 +1,7 @@
 package com.serkowski.configuration;
 
 import com.serkowski.services.AudioService;
-import com.serkowski.services.ChatCompletionService;
+import com.serkowski.services.ChatService;
 import com.serkowski.services.ImageService;
 import org.springframework.ai.audio.transcription.TranscriptionModel;
 import org.springframework.ai.chat.client.ChatClient;
@@ -43,8 +43,8 @@ public class Configuration {
 
 
     @Bean
-    public ChatCompletionService chatService(ChatClient chatClient) {
-        return new ChatCompletionService(chatClient);
+    public ChatService chatService(ChatClient chatClient) {
+        return new ChatService(chatClient);
     }
 
     @Bean
